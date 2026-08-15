@@ -1,0 +1,57 @@
+name: Week 02 Security CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: SAST - Semgrep
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan NoteVault
+        run: |
+          semgrep scan \
+            --config p/default \
+            --config p/owasp-top-ten \
+            --error \
+            project/starter-app
+
+  trivy:
+    name: SCA - Trivy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan HIGH and CRITICAL vulnerabilities
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: project/starter-app
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+  gitleaks:
+    name: Secret Scanning - Gitleaks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan NoteVault for secrets
+        run: |
+          docker run --rm \
+            -v "$PWD:/repo" \
+            zricethezav/gitleaks:latest \
+            detect --no-git -s /repo/project/starter-app -v
