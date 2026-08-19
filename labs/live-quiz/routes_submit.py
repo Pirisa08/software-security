@@ -338,6 +338,10 @@ def workspace():
     a = S.get_assignment(_db(), sub["assignment_id"])
     now = _now()
     error = None
+    # A student staring at a page that just silently re-renders after an
+    # upload has no way to tell "it saved" from "nothing happened" — surface
+    # which POST action just succeeded so the template can say so explicitly.
+    saved_action = None
 
     if request.method == "POST":
         _check_csrf()
@@ -354,6 +358,7 @@ def workspace():
                     raise S.SubmitError("Choose a file first.")
                 S.store_file(_db(), sub, display_name=up.filename,
                              data=up.read(), now=now, upload_dir=_uploads())
+            saved_action = action or "upload"
         except S.SubmitError as exc:
             error = str(exc)
         sub = _db().execute("SELECT * FROM submissions WHERE id = ?",
@@ -370,4 +375,4 @@ def workspace():
         score=(earned, possible, complete) if a["released"] else None,
         max_mb=S.MAX_FILE_BYTES // (1024 * 1024),
         max_files=S.MAX_FILES_PER_SUBMISSION,
-        csrf_token=_csrf(), error=error)
+        csrf_token=_csrf(), error=error, saved_action=saved_action)

@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 15 (DevSecOps)
 
-**~10 min · in-class · 6 questions · low-stakes** (drop lowest). No devices / locked browser.
+**~5 min · in-class · 5 questions · low-stakes** (drop lowest). No devices / locked browser.
 
 **Name:** ____________  **Student ID:** ________
 
@@ -15,6 +15,3 @@
    a) slow runs  b) a hijacked/moved tag supply-chain attack  c) merge conflicts  d) flaky tests
 5. **IaC scanning** (Checkov/tfsec) finds:
    a) UI bugs  b) misconfigurations in Terraform/IaC  c) memory leaks  d) typos in docs
-
-## Short answer — 🔒 your own work (1 × 3)
-6. Describe **one security gate** you added to the pipeline this week and exactly what it **blocks**. Then paste your personal flag (`FLAG{...}`) captured from the "Break the Build" fail-open challenge.

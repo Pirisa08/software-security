@@ -1,0 +1,69 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Flip your way to admin — without the key</h1>
+<p class="lead">A server issues a session token as unauthenticated AES-CBC ciphertext —
+<code>base64(IV ‖ C0 ‖ C1)</code>, no MAC, no auth tag. You've intercepted one token (the key is
+never sent). Can you turn <code>role=guest</code> into <code>role=admin</code> by editing
+ciphertext bytes you can't even decrypt — without ever learning the key?</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Session role cookie</button>
+  <button type="button" class="preset-btn" data-preset="1">Storage tier flag</button>
+  <button type="button" class="preset-btn" data-preset="2">Approval stage</button>
+</div>
+
+<div class="card">
+  <p class="hint">The intercepted token (this is all an attacker ever sees on the wire) — plus a
+  tag standing in for whatever real integrity check an AEAD-mode twin of this app would attach
+  (GCM's own tag math is different, but "no key, no valid tag" holds either way):</p>
+  <div class="q" id="intercepted"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="target-value">Value you want the field to decrypt to</label>
+  <input id="target-value" type="text" value="admin" autocomplete="off" spellcheck="false">
+  <p class="hint" id="length-hint"></p>
+</div>
+
+<div class="card card-gap">
+  <label for="offset">Byte offset in C0 where you start flipping — real attackers read this off
+    the app's fixed plaintext layout (leaked in its source, or just reverse-engineered)</label>
+  <input id="offset" type="range" min="0" max="15" value="5">
+  <span id="offset-val"></span>
+  <p class="hint" id="offset-hint"></p>
+  <button type="button" id="forge-btn">Compute the forged token</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <p class="hint">What you compute (never touching the key):</p>
+    <div class="q" id="work"></div>
+  </div>
+  <div class="card">
+    <p class="hint">Forged token you'd replay as your cookie</p>
+    <div class="q" id="forged"></div>
+  </div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Verifier A — AES-CBC, no MAC (like <code>:8096</code>)</h3>
+    <div class="q">decrypt(token), then read the field at its fixed byte offset</div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Verifier B — AEAD, e.g. AES-GCM (like <code>:8097</code>)</h3>
+    <div class="q">reject before trusting the plaintext unless the tag matches (GCM checks this
+      over its own CTR-mode ciphertext — a different mode from CBC, same "no key, no tag" idea)</div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/cbc-bitflip.js?v={{ asset_v }}"></script>
+</body></html>

@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Where does your password actually go?</h1>
+<p class="lead"><code>server.py</code> prints exactly one line per login attempt — whatever request
+body actually arrives. What's <em>in</em> that body is entirely up to which mode the client uses.
+Pick a login, flip the mode, and read the server's own log for yourself — real SHA-256 and real
+HMAC-SHA256, the same primitives <code>common.py</code> uses, computed live in your browser.</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Webmail login</button>
+  <button type="button" class="preset-btn" data-preset="1">Support console</button>
+  <button type="button" class="preset-btn" data-preset="2">Delivery-driver app</button>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">Mode — which <code>docker-compose</code> file would be running:</p>
+  <div class="preset" id="modes">
+    <button type="button" class="preset-btn" data-mode="plain">Plain-password login — PAKE unset</button>
+    <button type="button" class="preset-btn" data-mode="fixed">Challenge-response login — PAKE=1</button>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">What the client actually sends, and the server's own log line for it:</p>
+  <div class="q" id="server-log"></div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">What was computed (real SHA-256 + real HMAC-SHA256 — <code>common.py</code>'s
+  exact construction, nothing scripted):</p>
+  <div class="q" id="work"></div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Log reader — anyone who can read <code>server.py</code>'s own <code>print()</code> output</h3>
+    <p class="hint">A compromised server, an over-eager third-party logging SaaS, or anyone who
+    later breaches the log store — not a network eavesdropper. TLS never touches this.</p>
+    <p class="verdict" id="verdict-attacker" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Replay attempt</h3>
+    <p class="hint">The same log reader, trying to log in again using <em>only</em> what they just
+    captured — no new access, nothing extra.</p>
+    <button type="button" id="replay-btn">Replay the captured request</button>
+    <p class="verdict" id="verdict-replay" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/cred-harvest.js?v={{ asset_v }}"></script>
+</body></html>

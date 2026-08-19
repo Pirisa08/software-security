@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 14 (AI / LLM Security)
 
-**~10 min · in-class · 6 questions · low-stakes** (drop lowest). No devices / locked browser.
+**~5 min · in-class · 5 questions · low-stakes** (drop lowest). No devices / locked browser.
 
 **Name:** ____________  **Student ID:** ________
 
@@ -15,6 +15,3 @@
    a) the network  b) the model's learned behavior  c) the GPU  d) the cache
 5. **Sensitive information disclosure** in LLM apps is when the model:
    a) is rate-limited  b) leaks secrets/PII present in its context  c) refuses a task  d) returns JSON
-
-## Short answer — 🔒 your own work (1 × 3)
-6. Paste the **prompt-injection input** that captured the flag in this week's lab and explain why the **guardrail failed**. Then paste your **personal flag** (`FLAG{...}`) captured from the challenge.

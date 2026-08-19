@@ -59,7 +59,7 @@ allow-listed value) — never a smarter filter.
 | 0:55–1:05 | Break | | |
 | 1:05–1:35 | Deep dive + real cases | SQLi variants (auth bypass, UNION, blind/time-based — the last two named, not examined); command injection through `shell=True`; unrestricted upload as "injection into the filesystem"; two brief real breaches | Lecture + short discussion: "what would have stopped this?" |
 | 1:35–1:55 | Defences | Parameterised queries and why they are not "escaping"; `subprocess` with `shell=False` and an argv list; regex/allow-list validation; `secure_filename` + extension allow-list; where an ORM helps and where it does not | Lecture with code-diff comparisons |
-| 1:55–2:00 | Brief the game | "SQLi Boss Fight" — four hits, then the boss is defeated by defending it | Instruction |
+| 1:55–2:00 | Brief the game | "SQLi Warm-up" — four hits, then the boss is defeated by defending it | Instruction |
 
 **Checks for understanding during lecture**
 - After the core concept: cold-call *"which part of this string is code, and who wrote it?"*

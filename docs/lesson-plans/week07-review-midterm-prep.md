@@ -73,7 +73,7 @@ to discover that.
 | 1 | Security mindset & threat modelling | "Elevation of Privilege" STRIDE card game | STRIDE letters → property violated; what a trust boundary is; attack surface | Jeopardy (*Threat Modeling*); mock-CTF **warm-up** (3-element STRIDE table); Quiz 1 Part B |
 | 2 | Secure SDLC, tooling & fuzzing | "Bug Triage Race" | SAST vs DAST vs SCA vs fuzzing — what each sees, when it runs; true vs false positive | Jeopardy (*Tooling*); Quiz 1 Part A |
 | 3 | Cryptography used correctly (and misused) | "Capture the Hash" speedrun | hashing vs encryption vs encoding; why MD5 is wrong for passwords; salts; why ECB leaks; CSPRNG vs `random` | Mock-CTF **#6**; Jeopardy (*Crypto*) |
-| 4 | Injection & input handling | "SQLi Boss Fight" | data vs code; why a parameterised query wins and escaping does not; `shell=True` → CWE-78 | Mock-CTF **#1, #2**; Jeopardy (*Injection*); Quiz 1 Part C |
+| 4 | Injection & input handling | "SQLi Warm-up" | data vs code; why a parameterised query wins and escaping does not; `shell=True` → CWE-78 | Mock-CTF **#1, #2**; Jeopardy (*Injection*); Quiz 1 Part C |
 | 5 | XSS & client-side risks | "XSS Golf" | reflected vs stored vs DOM; contextual output encoding; CSP; `HttpOnly`/`SameSite`/`Secure` | Mock-CTF **#3**; Jeopardy (*XSS*) |
 | 6 | Authentication, sessions & access control | "IDOR Treasure Hunt + JWT Forgery" | authentication ≠ authorisation; IDOR; `alg:none`; weak HMAC secret; `exp`/`aud` | Mock-CTF **#4, #5**; Jeopardy (*Auth & Access*); Quiz 1 Part C |
 

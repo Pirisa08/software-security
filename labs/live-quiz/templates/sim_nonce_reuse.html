@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Peel apart two messages — without ever touching the key</h1>
+<p class="lead">Bob's session reuses one AES-GCM nonce for every message
+(<code>_FIXED_GCM_NONCE</code> in <code>broken_hybrid_encrypt.py</code>). You've intercepted two
+of his ciphertexts — the session key is never sent, and you never see it here either. Can you
+recover real bytes of the second message using nothing but XOR and a guess about the first?</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Session chat</button>
+  <button type="button" class="preset-btn" data-preset="1">Wire transfer memo</button>
+  <button type="button" class="preset-btn" data-preset="2">Password reset token</button>
+</div>
+
+<div class="card">
+  <p class="hint">Session A's ciphertext bodies (this is all an eavesdropper ever sees on the
+    wire — note: real <code>AESGCM.encrypt()</code> appends a 16-byte auth tag after this; this
+    sim omits it so the XOR below stays readable, but a real proof script must slice it off
+    first):</p>
+  <div class="q" id="intercepted"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="crib-offset">Byte offset where you think this crib starts</label>
+  <input id="crib-offset" type="range" min="0" max="30" value="0">
+  <span id="crib-offset-val"></span>
+  <p class="hint" id="crib-offset-hint"></p>
+</div>
+
+<div class="card card-gap">
+  <label for="crib">Text you believe appears in message 1 at that offset</label>
+  <input id="crib" type="text" autocomplete="off" spellcheck="false">
+  <button type="button" id="recover-btn">Recover the matching bytes of message 2</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <p class="hint">What you compute (the session key is never read):</p>
+    <div class="q" id="work"></div>
+  </div>
+  <div class="card">
+    <p class="hint">Recovered fragment, both sessions</p>
+    <div class="q" id="forged"></div>
+  </div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>broken_hybrid_encrypt.py — fixed nonce</h3>
+    <div class="q">nonce = 00…00 for every message this session</div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>fixed_hybrid_encrypt.py — fresh nonce per message</h3>
+    <div class="q">nonce = a counter, bumped once per message</div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/nonce-reuse.js?v={{ asset_v }}"></script>
+</body></html>

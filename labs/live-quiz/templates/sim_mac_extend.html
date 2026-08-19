@@ -1,0 +1,64 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Forge the admin cookie — without the secret key</h1>
+<p class="lead">A server signs data as <code>H(secret || data)</code>. You've intercepted one
+message (the secret is never sent). Can you extend it into something the server never signed
+— and still pass the MAC check — without ever learning the secret?</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Admin cookie</button>
+  <button type="button" class="preset-btn" data-preset="1">File-share permission</button>
+  <button type="button" class="preset-btn" data-preset="2">Order total</button>
+</div>
+
+<div class="card">
+  <p class="hint">The intercepted message (this is all an attacker ever sees on the wire):</p>
+  <div class="q" id="intercepted"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="guess-len">Your guess for the secret's length (bytes) — real attackers brute-force
+    a small range, or the length is a known system constant</label>
+  <input id="guess-len" type="range" min="1" max="16" value="8">
+  <span id="guess-len-val"></span>
+  <p class="hint" id="guess-hint"></p>
+</div>
+
+<div class="card card-gap">
+  <label for="extension">Bytes you want to append to the message</label>
+  <input id="extension" type="text" value="&amp;admin=true" autocomplete="off" spellcheck="false">
+  <button type="button" id="forge-btn">Compute the forged cookie</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <p class="hint">What you compute (never touching the secret):</p>
+    <div class="q" id="work"></div>
+  </div>
+  <div class="card">
+    <p class="hint">Forged cookie you'd send back</p>
+    <div class="q" id="forged"></div>
+  </div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Verifier A — <code>H(secret || data)</code></h3>
+    <div class="q">mac = toyhash(secret + data)</div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Verifier B — <code>H(secret || H(data))</code></h3>
+    <div class="q">mac = toyhash(secret + toyhash(data))</div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/mac-extend.js?v={{ asset_v }}"></script>
+</body></html>

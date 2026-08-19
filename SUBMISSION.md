@@ -7,7 +7,7 @@ All offensive work is on the provided sandbox targets only — see [ETHICS.md](E
 |---|---|
 | Course material — worksheets, lab guides | **`learn.zcr.ai/learn`** — no sign-in needed |
 | Weekly quiz | **`learn.zcr.ai/quiz`** — the one-time code on your slip |
-| Labs / CTF / scoreboard | **`ctf.zcr.ai`** — your account is issued to you, username = your student ID |
+| Labs / CTF / scoreboard | **`ctf.zcr.ai`** — your account is issued to you, username = your student ID. Private-network challenges need WireGuard: see [docs/arena-vpn-guide.md](docs/arena-vpn-guide.md). |
 | Code fixes | **GitHub** — your own fork |
 | Worksheet PDFs, project report | **`learn.zcr.ai/submit`** — the submission code on your slip |
 

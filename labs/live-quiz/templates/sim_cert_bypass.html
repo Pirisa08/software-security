@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Would your TLS client have caught the impostor?</h1>
+<p class="lead">Something on the network answers when a client dials a server address. It hands
+over a certificate. The handshake completes — real crypto, real session key, green padlock. The
+lock icon can't tell you <em>who</em> you're actually talking to. Only checking whether someone
+you already trust signed that certificate can.</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Vault code handoff</button>
+  <button type="button" class="preset-btn" data-preset="1">Internal API bearer token</button>
+  <button type="button" class="preset-btn" data-preset="2">Bank session login</button>
+</div>
+
+<div class="card">
+  <p class="hint" id="connect-line"></p>
+  <div class="q" id="cert-card"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="compromised-ca"><input type="checkbox" id="compromised-ca"> Bonus toggle — the CA
+    itself is compromised (the attacker also holds its private signing key)</label>
+  <p class="hint" id="compromised-hint"></p>
+</div>
+
+<div class="card card-gap">
+  <button type="button" id="handshake-btn">Attempt the TLS handshake</button>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">What actually gets computed when the handshake runs:</p>
+  <div class="q" id="work"></div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Client A — validation off (<code>CERT_NONE</code>, <code>check_hostname=False</code>)</h3>
+    <div class="q">no signature math ever runs — accepts whoever answered</div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Client B — validation on (loads the CA, keeps hostname checking)</h3>
+    <div class="q">check = signature^e mod n, using only the CA's public key it already trusts</div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/cert-bypass.js?v={{ asset_v }}"></script>
+</body></html>

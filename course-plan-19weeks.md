@@ -64,7 +64,7 @@ AI-resilient structure (see [AGENDA.md](AGENDA.md) for time-boxing):
 
 ### Week 4 — Injection & Input Handling
 - **Concept:** SQL injection, command injection, the general injection pattern, parameterized queries, output encoding. → **A05:2025**.
-- **⚔️ Signature game — "SQLi Boss Fight":** tiered injection challenges in **DVWA / Juice Shop** (easy → boss). Each cleared level unlocks a flag. Round 2 = patch the endpoints with prepared statements + validation.
+- **⚔️ Signature game — "SQLi Warm-up":** tiered injection challenges in **DVWA / Juice Shop** (easy → boss). Each cleared level unlocks a flag. Round 2 = patch the endpoints with prepared statements + validation.
 - **Why it's exciting:** RPG-style difficulty curve; the "boss" is a stacked filter students must bypass.
 - **♻️ Reuse from MFLU68:** *Week 2 Input Validation & Injection Attacks* deck + *Worksheet 2*; *Introduction to Burp Suite* deck.
 

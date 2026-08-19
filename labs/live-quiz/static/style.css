@@ -412,6 +412,7 @@ a.btn { text-decoration: none; display: inline-flex; align-items: center; justif
 }
 .join-card input#pin-input { font: 700 24px var(--mono); letter-spacing: .3em; text-align: center; }
 .join-err { font: 600 14px/1.4 var(--sans); color: var(--a-red-d); min-height: 20px; }
+.join-ok { font: 600 14px/1.4 var(--sans); color: var(--a-green-d); min-height: 20px; }
 .pdpa { font: 500 12px/1.5 var(--sans); color: var(--muted); }
 
 .pgame { flex: 1; display: flex; flex-direction: column; min-height: 0; }

@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Who can actually read it? The provider's own log, live</h1>
+<p class="lead"><code>server.py</code> is byte-for-byte the same code every time — it just
+<code>print(f"SERVER SAW: {payload}")</code>s whatever it's handed. What changes is only what
+Alice chooses to send. Pick a message, flip the mode, and read the provider's own log for
+yourself — same math a real RSA key-wrap and AES-style cipher would do, just toy-sized so every
+step fits on screen.</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Direct message</button>
+  <button type="button" class="preset-btn" data-preset="1">Password reset code</button>
+  <button type="button" class="preset-btn" data-preset="2">Prescription refill</button>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">Mode — which <code>docker-compose</code> file would be running:</p>
+  <div class="preset" id="modes">
+    <button type="button" class="preset-btn" data-mode="vulnerable">Vulnerable — TLS only</button>
+    <button type="button" class="preset-btn" data-mode="fixed">Fixed — hybrid E2EE</button>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <label class="server-can-read-check" for="substitute-key">
+    <input type="checkbox" id="substitute-key" disabled>
+    <span>Malicious server substitutes its own key for Bob's (the root-of-trust gap —
+    <strong>not</strong> what these two containers actually demonstrate; only meaningful once
+    Mode is Fixed)</span>
+  </label>
+  <p class="hint" id="substitute-hint"></p>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">What Alice hands the server, and the server's own log line for it:</p>
+  <div class="q" id="server-log"></div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">What actually got computed (toy-sized RSA key-wrap + an AES-style cipher, so
+  every number fits on screen — real modular exponentiation, real tag check, nothing scripted):</p>
+  <div class="q" id="work"></div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>The operator — reading its own log</h3>
+    <p class="verdict" id="verdict-operator" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Bob — decrypting with his real private key</h3>
+    <p class="verdict" id="verdict-bob" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/server-can-read.js?v={{ asset_v }}"></script>
+</body></html>

@@ -118,7 +118,7 @@ afl-fuzz -i seeds -o out -- ./vuln @@                                  # AFL++
 2. **Round 2 (Pwn):** exploit the overflow / format string
 3. **Round 3 (Defend):** rebuild with canary+ASLR+PIE, then **rewrite in Rust**
 
-<!-- Explain the 3 rounds before lab. Round 1 = instant feedback (it crashes or not). Round 3 (defend + Rust rewrite) is graded and the real lesson. Q6 of the quiz asks for the crashing input + the defense. ~3 min. -->
+<!-- Explain the 3 rounds before lab. Round 1 = instant feedback (it crashes or not). Round 3 (defend + Rust rewrite) is graded and the real lesson. The weekly quiz no longer asks for the crashing input/defense/flag (dropped — quiz runs before the lab) — that's required in the worksheet instead. ~3 min. -->
 
 ---
 

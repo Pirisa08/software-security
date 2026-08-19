@@ -100,7 +100,7 @@ folder holds the week's README, worksheet and runnable target.
 | 1 | Security mindset & threat modelling | 2 / 3 | `labs/week01-threat-modeling` | "Elevation of Privilege" STRIDE card game | 1, 6 |
 | 2 | Secure SDLC, tooling & fuzzing | 2 / 3 | `labs/week02-sdlc-tooling` | "Bug Triage Race" | 4 |
 | 3 | Cryptography used correctly (and misused) | 2 / 3 | `labs/week03-cryptography` | "Capture the Hash" speedrun | 2, 3 |
-| 4 | Injection & input handling | 2 / 3 | `labs/week04-injection` | "SQLi Boss Fight" | 2, 3 |
+| 4 | Injection & input handling | 2 / 3 | `labs/week04-injection` | "SQLi Warm-up" | 2, 3 |
 | 5 | XSS & client-side risks | 2 / 3 | `labs/week05-xss-client-side` | "XSS Golf" | 2, 3 |
 | 6 | Authentication, sessions & access control | 2 / 3 | `labs/week06-authn-authz` | "IDOR Treasure Hunt + JWT Forgery" | 2, 3 |
 | 7 | **Reflection & review** (pre-midterm) | 2 / 3 | `labs/week07-review-midterm-prep` | Mock CTF + cumulative quiz | 1–4 |

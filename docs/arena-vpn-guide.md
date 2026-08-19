@@ -79,5 +79,8 @@ violation, same as flag sharing.
 - **VPN connects but the challenge address still times out**: confirm you copied the
   address exactly (including the port after the `:`), and that your CTFd challenge
   instance hasn't expired (it says a countdown on the challenge page — restart it if so).
+- **Starting a challenge instance says you already have one running**: this can happen
+  even right after you stopped it — the stop request can silently fail to register. Wait
+  about 60 seconds and retry, or ask your instructor to clear your stuck instance.
 - **Still stuck**: message your instructor with your student ID and what you tried — don't
   share your `.conf` file to get help, a screenshot of the error is enough.

@@ -12,6 +12,10 @@
       {%- if a.week_slug %} · <a href="/learn/{{ a.week_slug }}">read the worksheet</a>{% endif %}</p>
     {% if a.instructions %}<p class="lead">{{ a.instructions }}</p>{% endif %}
     {% if error %}<div class="join-err">{{ error }}</div>{% endif %}
+    {% if saved_action == 'note' %}<div class="join-ok">✓ Note saved.</div>
+    {% elif saved_action == 'delete' %}<div class="join-ok">✓ File removed.</div>
+    {% elif saved_action %}<div class="join-ok">✓ Saved — you can come back with your code and
+      add or change files any time before the deadline.</div>{% endif %}
     {% if not can_upload %}<p class="lead"><b>The deadline has passed.</b> You can still
       read your feedback here.</p>{% endif %}
   </div>

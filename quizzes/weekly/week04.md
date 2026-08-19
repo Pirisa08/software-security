@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 4 (Injection)
 
-**~10 min · in-class · 6 questions · low-stakes** (drop lowest). No devices / locked browser.
+**~5 min · in-class · 5 questions · low-stakes** (drop lowest). No devices / locked browser.
 
 **Name:** ____________  **Student ID:** ________
 
@@ -15,6 +15,3 @@
    a) CWE-79  b) CWE-22  c) CWE-89  d) CWE-798
 5. Which does **not** by itself stop SQLi in the query?
    a) prepared statements  b) parameter binding  c) an ORM with bound params  d) HTML output encoding
-
-## Short answer — 🔒 your own work (1 × 3)
-6. From this week's **SQLi Boss Fight**, paste the **exact payload** you used to log in as admin and explain in one sentence **why** it worked. Then paste your **personal flag** (`FLAG{...}`) captured from the challenge.

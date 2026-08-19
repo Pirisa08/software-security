@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Crack the leaked password DB — before a salt and a slow KDF close the door</h1>
+<p class="lead">You have a stolen copy of two password stores for the same users — one
+unsalted MD5, one salted with a real (if simplified) iterated KDF. Same 101-word dictionary,
+same real MD5 running underneath both. Watch what actually changes.</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">University portal</button>
+  <button type="button" class="preset-btn" data-preset="1">Campus camera fleet</button>
+  <button type="button" class="preset-btn" data-preset="2">Helpdesk mailbox</button>
+</div>
+
+<div class="card">
+  <p class="hint" id="org-label"></p>
+  <div class="hash-crack-two">
+    <div>
+      <h3>Store A — unsalted MD5</h3>
+      <div class="q" id="store-a"></div>
+      <p class="hint" id="store-a-cap"></p>
+    </div>
+    <div>
+      <h3>Store B — salted + iterated KDF</h3>
+      <div class="q" id="store-b"></div>
+      <p class="hint" id="store-b-cap"></p>
+    </div>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <label for="cost">Store B's KDF cost factor — real hash operations spent per guess (this is
+    what bcrypt calls the "work factor," implemented here as a plain iteration count)</label>
+  <input id="cost" type="range" min="1" max="400" value="150">
+  <span id="cost-val"></span>
+
+  <label for="guess">Try a single guess live — no need to run the full attack for just one
+    word</label>
+  <input id="guess" type="text" placeholder="try a wordlist word, e.g. sunshine2021"
+         autocomplete="off" spellcheck="false">
+  <p class="hint" id="guess-live" aria-live="polite"></p>
+
+  <button type="button" id="attack-btn" class="card-gap">Run the full dictionary attack — 101
+    real MD5 candidates</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <p class="hint">What actually ran (every candidate really hashed, no shortcuts):</p>
+    <div class="q" id="work"></div>
+  </div>
+  <div class="card">
+    <p class="hint">Recovered</p>
+    <div class="q" id="recovered"></div>
+  </div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Store A — unsalted, fast</h3>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Store B — salted, iterated</h3>
+    <p class="verdict" id="verdict-b-naive" aria-live="polite"></p>
+    <p class="verdict" id="verdict-b-adapted" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/hash-crack.js?v={{ asset_v }}"></script>
+</body></html>

@@ -150,7 +150,7 @@ gate-check
 - **Red:** three gate-mapped attacks only — outdated dependency (Trivy SCA), a Dockerfile running as root (Trivy config), a hardcoded token (Gitleaks). `chmod 777` and `FROM:latest` are decoys that stay green — not gate bypasses
 - **Score:** Blue per catch, Red per successful bypass; then capture your personal flag from the fail-open `/admin` bypass in `insecure_service.py`
 
-<!-- The capstone game. Both roles teach: Blue learns to configure gates, Red learns where gates have blind spots — but Red's menu is fixed to 3 attacks that actually map to a gate, not open-ended. Run it as live PRs against the pipeline. Weekly quiz Q6 asks for one gate they added + what it blocks + their personal flag — don't drop the flag half, it's graded too. ~3 min. -->
+<!-- The capstone game. Both roles teach: Blue learns to configure gates, Red learns where gates have blind spots — but Red's menu is fixed to 3 attacks that actually map to a gate, not open-ended. Run it as live PRs against the pipeline. The weekly quiz no longer asks for the gate/what-it-blocks/flag (dropped — quiz runs before the lab) — that's required in the worksheet instead, don't drop the flag half there, it's still graded. ~3 min. -->
 
 ---
 

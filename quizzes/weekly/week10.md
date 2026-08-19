@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 10 (API Security)
 
-**~10 min · in-class · 6 questions · low-stakes** (drop lowest). No devices / locked browser.
+**~5 min · in-class · 5 questions · low-stakes** (drop lowest). No devices / locked browser.
 
 **Name:** ____________  **Student ID:** ________
 
@@ -15,6 +15,3 @@
    a) is too long  b) gets logged in servers/proxies/history  c) breaks caching  d) needs HTTPS
 5. **BFLA** is broken ____ level authorization:
    a) field  b) function  c) file  d) frame
-
-## Short answer — 🔒 your own work (1 × 3)
-6. In this week's API lab, which **endpoint** allowed **mass assignment** of a privileged field? Name the **field** and the **fix**. Then paste your **personal flag** (`FLAG{...}`) captured from the challenge.

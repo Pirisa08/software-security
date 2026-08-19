@@ -169,7 +169,7 @@ Craft the **shortest** payload that pops `alert(1)` / steals a cookie against `v
 3. Run `fixed_app.py` — confirm output encoding + CSP now block your XSS payloads
 4. Demonstrate CSRF **still succeeds** against `fixed_app.py` — explain why SameSite didn't stop it
 
-<!-- Logistics. Step 4 is the one people get backwards: the defended app still falls to CSRF, on purpose — the lesson is that SameSite protects cookie *attachment*, not request *authorization*. Steps 3-4 (defend) are graded. Q6 of the quiz asks for their own scoring payload + the sink it hit. -->
+<!-- Logistics. Step 4 is the one people get backwards: the defended app still falls to CSRF, on purpose — the lesson is that SameSite protects cookie *attachment*, not request *authorization*. Steps 3-4 (defend) are graded. The weekly quiz no longer asks for their scoring payload/sink/flag (dropped — quiz runs before the lab) — that's required in the worksheet instead. -->
 
 ---
 

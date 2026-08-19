@@ -594,3 +594,57 @@ input.jwt-forge-in{font-size:.95rem;padding:.4rem .5rem}
 .eop-actions{display:flex;flex-wrap:wrap;gap:.5rem}
 .eop-tie{font-weight:700;border-color:var(--blue);color:var(--blue)}
 .eop-pass{color:var(--mut)}
+
+/* ── server-can-read (Week 13, security-cryptography): TLS-only vs hybrid E2EE ──
+   Mode buttons reuse .preset/.preset-btn verbatim (a second independent group in
+   its own #modes container, same aria-pressed pattern as #presets). Only the
+   checkbox row is new -- no other sim has a single boolean toggle framed as its
+   own labelled control, so .server-can-read-check is a fresh flex row rather
+   than bending .iam-evaluation-check (that one assumes a fieldset of many). */
+.server-can-read-check{display:flex;align-items:flex-start;gap:.5rem;margin:0;cursor:pointer}
+.server-can-read-check input{width:1.1rem;height:1.1rem;margin-top:.15rem;flex:0 0 auto}
+.server-can-read-check:has(input:disabled){opacity:.55;cursor:not-allowed}
+
+/* ── lamport-reuse (Week 15, security-cryptography): sign twice, lose the key ──
+   Action buttons reuse .preset/.preset-btn verbatim for layout (a second
+   independent group, #actions, same static-button-with-listener pattern as
+   #presets). .lamport-act only adds a scoped :disabled treatment — a bare
+   button:disabled rule would restyle every other sim's buttons too. */
+.lamport-act:disabled{opacity:.45;cursor:not-allowed}
+
+/* 8-per-row like stack-frame-cells above; the SAME shape (a fixed-width
+   bit-position grid) but this one is clickable per-cell (stack-frame's isn't),
+   so focus-visible and a pointer cursor are new here. */
+.lamport-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));
+  gap:.3rem;margin:.5rem 0}
+@media (max-width:560px){.lamport-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.lamport-cell{display:flex;flex-direction:column;align-items:center;gap:.1rem;
+  border:1px solid var(--line);border-radius:5px;padding:.3rem .1rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;
+  background:var(--bg);color:var(--fg);cursor:pointer}
+.lamport-cell:hover{border-color:var(--blue)}
+.lamport-cell:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.lamport-idx{font-size:.62rem;color:var(--mut)}
+.lamport-glyph{font-size:.85rem;font-weight:700}
+.lamport-cell.is-unknown{opacity:.5}
+.lamport-cell.is-half{border-color:var(--blue)}
+.lamport-cell.is-full{border-color:var(--blue);background:rgba(1,123,196,.14)}
+/* Independent of phase: this marks a STATIC property of the loaded preset
+   (does the target message need bit=1 here), visible before any signature is
+   collected, so a student can predict Verifier B's failures before clicking
+   forge. Colour is never the only signal — the dashed style itself reads
+   under a projector that crushes colour. */
+.lamport-cell.is-b-needed{border-bottom:3px dashed var(--orange)}
+.lamport-cell.is-selected{box-shadow:0 0 0 2px var(--blue) inset}
+
+/* ── hash-crack (Week 2, security-cryptography): unsalted MD5 vs salted+iterated KDF ──
+   The two leaked stores are plain .q monospace blocks (mac-extend's own idiom for
+   "here is exactly what's on the wire") rather than a bespoke table -- one username
+   per line keeps this append to a single small class, not a table/th/td stylesheet.
+   Only the twin-row annotation (same password, correlated or not) needs its own
+   color: everything else reuses .card/.wrap/.verdict/.hint/.preset as-is. */
+.hash-crack-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:.3rem}
+@media (max-width:760px){.hash-crack-two{grid-template-columns:1fr}}
+.hash-crack-flag{font-weight:700}
+.hash-crack-flag.same{color:var(--orange)}
+.hash-crack-flag.diff{color:var(--blue)}

@@ -138,7 +138,7 @@ prompt-guard
 2. **Round 2 (graded):** replay your winning injection + the reflected-XSS payload against the **guarded** bot — does it still land?
 3. **Written only:** tool poisoning / excessive agency on an MCP-style agent (worksheet Q5) — no agent exists in this lab to demo live
 
-<!-- Gandalf (Lakera) is genuinely fun and free — students compete to climb levels. Round 2 (Task 5: replay against guarded_chatbot.py) is graded — the point is that guardrails/redaction/escaping visibly stop what worked before. Don't promise a live tool-poisoning demo; it's a discussion question. Q6 of the quiz asks for the injection that captured the flag + why the guardrail failed. ~3 min. -->
+<!-- Gandalf (Lakera) is genuinely fun and free — students compete to climb levels. Round 2 (Task 5: replay against guarded_chatbot.py) is graded — the point is that guardrails/redaction/escaping visibly stop what worked before. Don't promise a live tool-poisoning demo; it's a discussion question. The weekly quiz no longer asks for the injection/guardrail-failure/flag (dropped — quiz runs before the lab) — that's required in the worksheet instead. ~3 min. -->
 
 ---
 

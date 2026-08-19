@@ -1,0 +1,65 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Crack the key that was never really random</h1>
+<p class="lead">AES-256, RSA-4096 — the biggest algorithms available — and none of it matters if
+the key comes from a source with only a few thousand possible values. You never see the secret
+seed, only a published one-way commitment to it. Can you still recover the exact key, using
+nothing but the server's own functions, run for real in your browser?</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">TLS host key</button>
+  <button type="button" class="preset-btn" data-preset="1">Session token</button>
+  <button type="button" class="preset-btn" data-preset="2">Password-reset link</button>
+</div>
+
+<div class="card">
+  <p class="hint" id="scenario-context"></p>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">The only thing that ever left the server:</p>
+  <div class="q" id="intercepted"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="search-range">How many candidate seeds you'll try, starting from 0 — a real
+    attacker knows the real source, you're choosing how far to search it</label>
+  <input id="search-range" type="range" min="1" max="98304" value="32768" step="1">
+  <span id="search-range-val"></span>
+  <p class="hint" id="range-hint"></p>
+  <button type="button" id="crack-btn">Run the brute force</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <p class="hint">What you compute (real <code>expand()</code>/<code>commit()</code>, looped for
+      real):</p>
+    <div class="q" id="work"></div>
+  </div>
+  <div class="card">
+    <p class="hint">Recovered key</p>
+    <div class="q" id="recovered"></div>
+  </div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Verifier A — the real deployment's actual seed source</h3>
+    <div class="q">commit(expand(seed)) == published commitment ?</div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Verifier B — the design's intended 2<sup>128</sup> keyspace</h3>
+    <div class="q">same functions, projected onto a true random seed</div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/seed-crack.js?v={{ asset_v }}"></script>
+</body></html>

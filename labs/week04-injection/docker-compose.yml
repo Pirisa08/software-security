@@ -1,6 +1,6 @@
 services:
   injection-lab:
-    image: python:3.12-slim
+    build: .
     working_dir: /lab
     ports:
       - "8080:5000"

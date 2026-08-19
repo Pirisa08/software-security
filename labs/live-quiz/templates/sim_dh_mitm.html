@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Be the man in the middle — without breaking Diffie-Hellman's math</h1>
+<p class="lead">Alice and Bob each run a real DH handshake with whoever answers on the network
+path between them. The math is honest on both sides — the only question neither side ever asks
+is <em>who</em> answered. Sit in the middle, run two independent handshakes, and read their
+"secure" message in the clear.</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Launch codes</button>
+  <button type="button" class="preset-btn" data-preset="1">Wire transfer</button>
+  <button type="button" class="preset-btn" data-preset="2">Login session token</button>
+</div>
+
+<div class="card">
+  <p class="hint">What Alice sends into the connection she believes is Bob's (this is all a
+    passive eavesdropper — or you, before you start substituting keys — would ever see):</p>
+  <div class="q" id="scenario"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="authknown">Has <code>AUTH_KEY</code> leaked to you (Relay)? Normally you never see
+    it — this box exists to test whether the fix below actually depends on that.</label>
+  <input id="authknown" type="checkbox">
+  <p class="hint" id="authknown-hint"></p>
+</div>
+
+<div class="card card-gap">
+  <button type="button" id="run-btn">Run the MITM attempt</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <p class="hint">What Relay computes (real modular exponentiation, every run):</p>
+    <div class="q" id="work"></div>
+  </div>
+  <div class="card">
+    <p class="hint">The message as it actually crosses Relay</p>
+    <div class="q" id="intercepted"></div>
+  </div>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Verifier A — Vulnerable: plain DH</h3>
+    <div class="q">Alice/Bob derive a session key from whichever public value arrived — never checked against anything</div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Verifier B — Fixed: HMAC-authenticated DH</h3>
+    <div class="q">tag = toy_hmac(AUTH_KEY, pubkey_bytes) — checked before either side derives a session key</div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/dh-mitm.js?v={{ asset_v }}"></script>
+</body></html>

@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 5 (Cross-Site Scripting)
 
-**~10 min · in-class · 6 questions · low-stakes** (drop lowest). No devices / locked browser.
+**~5 min · in-class · 5 questions · low-stakes** (drop lowest). No devices / locked browser.
 
 **Name:** ____________  **Student ID:** ________
 
@@ -15,6 +15,3 @@
    a) CWE-89  b) CWE-79  c) CWE-352  d) CWE-611
 5. The `HttpOnly` cookie flag helps because it:
    a) encrypts the cookie  b) stops JavaScript from reading the cookie  c) blocks all cookies  d) sets SameSite
-
-## Short answer — 🔒 your own work (1 × 3)
-6. Paste the XSS payload that **scored in this week's XSS Golf** and name the **sink** it reached (e.g., `innerHTML`, attribute, URL). Then paste your personal flag (`FLAG{...}`) captured from the challenge.

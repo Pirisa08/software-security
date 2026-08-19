@@ -1,0 +1,73 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Decrypt the secret — without the key, one 200 or 403 at a time</h1>
+<p class="lead">A server encrypts data with AES-CBC and never returns the plaintext — only a
+<code>200</code> if the decrypted padding checks out, or a <code>403</code> if it doesn't. That
+feels safe: nothing is ever "leaked." Watch how far that single yes/no answer actually goes.</p>
+
+<div class="preset" id="presets">
+  <button type="button" class="preset-btn" data-preset="0">Session cookie</button>
+  <button type="button" class="preset-btn" data-preset="1">Password-reset link</button>
+  <button type="button" class="preset-btn" data-preset="2">Payment authorization</button>
+</div>
+
+<div class="card">
+  <p class="hint">Both services protect the same secret text. This is all an attacker ever sees on
+    the wire — never the plaintext, never either key:</p>
+  <div class="q" id="intercepted"></div>
+</div>
+
+<div class="card card-gap">
+  <label for="guess-byte">Your guess for the last byte of a forged "previous block" (0–255) — a
+    real attacker doesn't know this in advance; they try every value in order</label>
+  <input id="guess-byte" type="range" min="0" max="255" value="0">
+  <span id="guess-byte-val"></span>
+  <p class="hint">Every other byte of the forged block stays <code>0x00</code>. Drag until Oracle
+    A flips to <b>200</b> — that single accepted guess reveals one real byte of the server's
+    internal decryption state, with zero knowledge of its key.</p>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Oracle A — AES-CBC (unauthenticated)</h3>
+    <div class="q">check: pkcs7_valid( D(C_t) XOR forged_prev )</div>
+    <div class="q" id="work-a"></div>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Oracle B — toy-AEAD (tag checked first)</h3>
+    <div class="q">check: tag(forged_prev || C_t) == real tag — BEFORE any padding logic</div>
+    <div class="q" id="work-b"></div>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">This one manual guess is step one of the real attack. The automated version below
+    repeats it for every byte of every block — forcing <code>…0x02 0x02</code>, then
+    <code>…0x03 0x03 0x03</code>, and so on — disambiguating the false-positive case the same way
+    <code>exploit.py</code> does, until the whole secret falls out. No AES key, ever.</p>
+  <button type="button" id="recover-btn">Run the full byte-by-byte recovery</button>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Automated recovery — Oracle A</h3>
+    <div class="q" id="recover-work-a"></div>
+    <p class="verdict" id="recover-verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Automated recovery — Oracle B</h3>
+    <div class="q" id="recover-work-b"></div>
+    <p class="verdict" id="recover-verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<script src="/static/sim/padding-oracle.js?v={{ asset_v }}"></script>
+</body></html>

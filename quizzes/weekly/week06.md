@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 6 (Authentication & Access Control)
 
-**~10 min · in-class · 6 questions · low-stakes** (drop lowest). No devices / locked browser.
+**~5 min · in-class · 5 questions · low-stakes** (drop lowest). No devices / locked browser.
 
 **Name:** ____________  **Student ID:** ________
 
@@ -15,6 +15,3 @@
    a) A01 Broken Access Control  b) A03 Injection  c) A07 Auth Failures  d) A02 Crypto Failures
 5. A password-reset token should be:
    a) the user's email  b) sequential  c) random, single-use, and expiring  d) the username reversed
-
-## Short answer — 🔒 your own work (1 × 3)
-6. From the **IDOR Treasure Hunt**, which **object id** let you reach another user's data, and what **server-side check** would stop it? Then paste your **personal flag** (`FLAG{...}`) captured from the challenge.

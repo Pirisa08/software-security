@@ -20,7 +20,7 @@ Software Security · Nutthakorn Chalaemwongwan
 - SQL injection — hands-on
 - Command injection
 - Defenses: parameterized queries + validation
-- 🎮 Game: **SQLi Boss Fight**
+- 🎮 Game: **SQLi Warm-up**
 
 <!-- Roadmap, 1 min. Tell them the one big idea (data becomes code) unifies SQLi, command injection, and even XSS next week. Lab = exploit DVWA/Juice Shop then patch it. -->
 
@@ -91,7 +91,7 @@ SELECT * FROM users WHERE username = 'alice'--' AND password = '...';
 - `--` comments out everything after it, including the password check
 - No trailing space, no `LIMIT` trick needed — this app is SQLite via `fetchone()`, not a MySQL row-count gate; **don't carry over MySQL-specific folklore** ("needs a space after `--`") — that's a different engine's quirk
 
-<!-- The worked example — slow down here. Decompose the payload token by token; this is exactly the SQLi Boss Fight's auth-bypass hit. A common wrong instinct is to add `OR 1=1` and a `LIMIT` clause copied from a MySQL tutorial — walk through why neither is needed against this SQLite app, and why the bare `'--` is what the worksheet actually uses. ~8 min. -->
+<!-- The worked example — slow down here. Decompose the payload token by token; this is exactly the SQLi Warm-up's auth-bypass hit. A common wrong instinct is to add `OR 1=1` and a `LIMIT` clause copied from a MySQL tutorial — walk through why neither is needed against this SQLite app, and why the bare `'--` is what the worksheet actually uses. ~8 min. -->
 
 ---
 
@@ -188,7 +188,7 @@ The classic *chain*, attacker uploads `shell.php`:
 
 ---
 
-## ⚔️ Game — SQLi Boss Fight
+## ⚔️ Game — SQLi Warm-up
 
 Four hits against this week's own app — no filters to bypass, the app has none:
 
@@ -196,9 +196,9 @@ Four hits against this week's own app — no filters to bypass, the app has none
 2. UNION dump (steal all credentials)
 3. Command injection
 4. Unrestricted upload
-5. **Boss defeated:** run `solution_app.py`, prove all four attacks now fail, cite the exact fix line for each
+5. **Warm-up cleared:** run `solution_app.py`, prove all four attacks now fail, cite the exact fix line for each
 
-<!-- Explain before lab: this is NOT a tiered WAF-bypass ladder — it's 4 fixed attacks against app.py, then proving solution_app.py blocks all 4 ("boss defeated" = Task 5). No filter exists in the vulnerable app to bypass; don't set that expectation. DVWA/Juice Shop remain available as optional secondary targets, not the graded game. ~3 min. -->
+<!-- Explain before lab: this is NOT a tiered WAF-bypass ladder — it's 4 fixed attacks against app.py, then proving solution_app.py blocks all 4 ("warm-up cleared" = Task 5). No filter exists in the vulnerable app to bypass; don't set that expectation. DVWA/Juice Shop remain available as optional secondary targets, not the graded game. This is deliberately separate from the arena's own "SQLi Boss Fight" container challenge later in the session — same technique, different target, don't conflate the two names. ~3 min. -->
 
 ---
 
@@ -227,7 +227,7 @@ docker run --rm -p 80:80 vulnerables/web-dvwa   # optional extra target (or Juic
 - Proof the payload no longer works
 - **+ Audit the AI / EiPE / Prompt Problem** (see worksheet)
 
-<!-- Set expectations: before AND after code + proof. The AI-resilient tasks are part of the grade. Q6 of this week's quiz asks for their own payload — confirm the current worksheet's exact wording before promising a "personal flag" on stage; check with the team if that's still accurate. -->
+<!-- Set expectations: before AND after code + proof. The AI-resilient tasks are part of the grade. The weekly quiz no longer asks for their payload/flag (that question was dropped — quiz runs before the lab, so it couldn't be answered) — the payload + flag are required in the worksheet's Task 1 and Evidence & Integrity section instead. -->
 
 ---
 

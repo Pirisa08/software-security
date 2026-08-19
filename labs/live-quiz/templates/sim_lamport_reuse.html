@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title><link rel="stylesheet" href="/static/sim/sim.css"></head>
+<body>
+<h1>Sign it twice, and the whole private key falls out</h1>
+<p class="lead">A server holds ONE Lamport one-time keypair and reuses it on every
+<code>/sign</code> call. It will happily sign almost anything you ask — except the one exact
+message that matters, which it refuses outright. Ask it to sign that message's bitwise
+complement too, and you never need the refused message signed at all: you can forge it
+yourself, offline, from the two signatures it did give you.</p>
+
+<div class="preset" id="presets" role="group" aria-label="Pick a scenario">
+  <button type="button" class="preset-btn" data-preset="0">Admin access</button>
+  <button type="button" class="preset-btn" data-preset="1">File-share control</button>
+  <button type="button" class="preset-btn" data-preset="2">Payment approval</button>
+</div>
+<p class="hint" id="scenario-note"></p>
+
+<div class="card">
+  <p class="hint">The message the server refuses to sign directly (this is the one that matters):</p>
+  <div class="q" id="target"></div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">Every hash below is a real SHA-256 (byte-identical to Python's
+  <code>hashlib.sha256</code>), every preimage is 32 genuinely random bytes, and the two
+  verifiers below run the exact <code>sign</code> / <code>verify</code> logic in
+  <code>vulnerable_app.py</code> and <code>fixed_app.py</code>. Nothing here is scripted to a
+  preset outcome — click through and the verdicts are computed live.</p>
+  <div class="preset" id="actions" role="group" aria-label="Run the attack">
+    <button type="button" class="lamport-act" id="sign-m-btn">&#9312; POST /sign {"message_hex":"00000000"}</button>
+    <button type="button" class="lamport-act" id="sign-notm-btn" disabled>&#9313; POST /sign {"message_hex":"ffffffff"}</button>
+    <button type="button" class="lamport-act" id="forge-btn" disabled>&#9314; Forge &amp; check /admin</button>
+    <button type="button" class="lamport-act" id="run-all-btn">Run the whole attack</button>
+  </div>
+  <p class="hint" id="action-status" aria-live="polite"></p>
+</div>
+
+<div class="wrap card-gap">
+  <div class="card">
+    <h3>Verifier A — vulnerable_app.py <code>:8100</code> (key reused, no enforcement)</h3>
+    <p class="verdict" id="verdict-a" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h3>Verifier B — fixed_app.py <code>:8101</code> (one-time enforced)</h3>
+    <p class="verdict" id="verdict-b" aria-live="polite"></p>
+  </div>
+</div>
+
+<div class="card card-gap">
+  <p class="hint" id="summary"></p>
+</div>
+
+<div class="card card-gap">
+  <p class="hint">What you know, bit by bit (32 positions, Verifier A's keypair). Cells with a
+  dashed orange underline are where the target message needs bit=1 — exactly the positions
+  Verifier B's forgery above gets wrong. Click any cell for the real SHA-256 check there.</p>
+  <div class="lamport-grid" id="grid" role="group" aria-label="Bit-by-bit key-recovery state"></div>
+  <div class="q" id="cell-detail">Click a bit position after step &#9312; to see the real SHA-256 check.</div>
+</div>
+
+<script src="/static/sim/lamport-reuse.js?v={{ asset_v }}"></script>
+</body></html>

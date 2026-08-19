@@ -207,7 +207,7 @@ GET /uploads/backdoor.php?cmd=ls%20-l                200   ← RCE
 3. Switch to `solution_app.py`; re-test: access denied
 4. Cite the exact line that fixes each of the three attacks
 
-<!-- Logistics. Steps 3-4 (verify the defense + cite the fix) graded — no student-authored fix code in this lab, the fix is handed to them already written. Q6 of the quiz asks for the object id they used + the fix + their personal flag. Also the NoteVault project access-control task. -->
+<!-- Logistics. Steps 3-4 (verify the defense + cite the fix) graded — no student-authored fix code in this lab, the fix is handed to them already written. The weekly quiz no longer asks for the object id/fix/flag (dropped — quiz runs before the lab) — that's required in the worksheet instead. Also the NoteVault project access-control task. -->
 
 ---
 

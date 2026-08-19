@@ -21,6 +21,8 @@ docker compose up        # (where a target is provided)
 
 **Base requirements (Docker-first):** **Docker Desktop**, Git, and a browser proxy (Burp Suite Community or OWASP ZAP) — every lab runs via `docker compose up`, no full VM needed. A few weeks (mainly W11) use the **`labs/toolbox`** container for Linux dev/attacker tools; a Kali/Ubuntu VM is an optional fallback. See [labs/week01-threat-modeling/README.md](labs/week01-threat-modeling/README.md) for the full "Lab 0" setup.
 
+To reach the CTF arena's private-network challenges you'll also need WireGuard — see [docs/arena-vpn-guide.md](docs/arena-vpn-guide.md) for install + connect steps.
+
 ---
 
 ## Course at a glance
@@ -30,7 +32,7 @@ docker compose up        # (where a target is provided)
 | 1  | Security mindset & threat modeling | A06 | "Elevation of Privilege" STRIDE card game |
 | 2  | Secure SDLC, tooling & fuzzing | — | "Bug Triage Race" + "Fuzzing Race" |
 | 3  | Cryptography used correctly | A04 | "Capture the Hash" speedrun + ECB oracle |
-| 4  | Injection & input handling | A05 | "SQLi Boss Fight" (DVWA / Juice Shop) |
+| 4  | Injection & input handling | A05 | "SQLi Warm-up" (DVWA / Juice Shop) |
 | 5  | XSS & client-side risks | A05 | "XSS Golf" (shortest payload wins) |
 | 6  | Authn, sessions & access control | A01, A07 | "IDOR Treasure Hunt + JWT Forgery" |
 | **7**  | **🔁 Reflection & Review (pre-midterm)** | — | "Security Jeopardy" + mock CTF |

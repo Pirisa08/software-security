@@ -152,7 +152,7 @@ Local API, `docker compose up` → :8080 (vulnerable) / :8081 (fixed):
 
 > **Bonus (optional, ~20 min): crAPI** — OWASP's own intentionally-vulnerable API, real GUID-based BOLA, capture-only, no fix step, no separate grade
 
-<!-- Explain before lab: the local app IS the graded lab — 65 of 100 points, all four tasks above. crAPI is a genuinely fun bonus with zero grading weight and no fix/patch step — don't imply "Round 2" fixes crAPI, nothing does. Defend (task 4) is read-and-cite against a pre-written solution, not student-authored code. Q6 of the quiz asks for the mass-assignment field + fix + personal flag from the LOCAL target. ~3 min. -->
+<!-- Explain before lab: the local app IS the graded lab — 65 of 100 points, all four tasks above. crAPI is a genuinely fun bonus with zero grading weight and no fix/patch step — don't imply "Round 2" fixes crAPI, nothing does. Defend (task 4) is read-and-cite against a pre-written solution, not student-authored code. The weekly quiz no longer asks for the mass-assignment field/fix/flag (dropped — quiz runs before the lab) — that's required in the worksheet instead. ~3 min. -->
 
 ---
 

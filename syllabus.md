@@ -101,7 +101,7 @@ A one-page **"Lab 0" setup guide** is provided in Week 1 so the whole environmen
 
 **Week 4 — Injection & Input Handling**
 *Lecture:* SQL injection, command injection, the general injection pattern; parameterized queries; output encoding. Maps to **A05:2025 Injection**.
-*⚔️ Game — "SQLi Boss Fight":* tiered injection challenges in DVWA / Juice Shop; rewrite endpoints with prepared statements + validation.
+*⚔️ Game — "SQLi Warm-up":* tiered injection challenges in DVWA / Juice Shop; rewrite endpoints with prepared statements + validation.
 
 **Week 5 — Cross-Site Scripting (XSS) & Client-Side Risks**
 *Lecture:* Reflected/stored/DOM XSS; CSRF; SameSite cookies; Content Security Policy; same-origin policy.

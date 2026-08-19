@@ -73,7 +73,7 @@ Bring a laptop able to run Docker Desktop to every session — the compressed fo
 | Session | Date | 19-wk equiv. | AM lecture (08:00–12:00) | PM lab (13:00–17:00) |
 |---|---|---|---|---|
 | 1 | Sat 15 Aug 69 | Wk 1–2 | Threat modeling + Secure SDLC/tooling | STRIDE game + Bug Triage/Fuzzing Race |
-| **2** | **Sun 16 Aug 69** | Wk 3–4 | Cryptography + Injection | Capture the Hash + SQLi Boss Fight |
+| **2** | **Sun 16 Aug 69** | Wk 3–4 | Cryptography + Injection | Capture the Hash + SQLi Warm-up |
 | 3 | Sat 5 Sep 69 | Wk 5–6 | XSS/client-side + Authn/access control | XSS Golf + IDOR Treasure Hunt/JWT Forgery |
 | **4** | **Sat 19 Sep 69** | **Wk 8–9** | **Midterm written exam** (covers Sessions 1–3) | **Midterm CTF practical** |
 | 5 | Sat 10 Oct 69 | Wk 10–12 | API security + Memory-safety + Supply chain | crAPI Raid + Pwn the Binary + Dependency Confusion Heist |
@@ -100,7 +100,7 @@ Bring a laptop able to run Docker Desktop to every session — the compressed fo
 
 **PM — Labs**
 - 🔓 **"Capture the Hash"** — crack weak hashes + break an ECB oracle (speedrun), then remediate with a vetted KDF and authenticated encryption.
-- ⚔️ **"SQLi Boss Fight"** — tiered injection challenges in DVWA/Juice Shop; rewrite endpoints with prepared statements + validation.
+- ⚔️ **"SQLi Warm-up"** — tiered injection challenges in DVWA/Juice Shop; rewrite endpoints with prepared statements + validation.
 
 ### Session 3 (Sat 5 Sep 69) — Wk 5–6: Web App Security II
 

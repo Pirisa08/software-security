@@ -16,13 +16,13 @@
 - Explain why parameterized queries defeat injection.
 - Apply input validation and output handling correctly.
 
-## ⚔️ Signature game — "SQLi Boss Fight"
+## ⚔️ Signature game — "SQLi Warm-up"
 Four hits against this week's own app — no filters to bypass, the app has none:
 1. **Hit #1 — Auth bypass** via SQLi (e.g. `alice'--`).
 2. **Hit #2 — UNION dump:** steal every username and password.
 3. **Hit #3 — Command injection** on `/ping`.
 4. **Hit #4 — Unrestricted upload** with no type checks.
-5. **Boss defeated:** run `solution_app.py`, prove all four attacks now fail, and cite the exact fix line for each.
+5. **Warm-up cleared:** run `solution_app.py`, prove all four attacks now fail, and cite the exact fix line for each.
 
 ## Run the local target
 ```bash
