@@ -47,16 +47,17 @@
 
 One block per finding (copy as needed):
 
-### Finding F-01 — <title>
+### Finding F-01 — Weak Password Hashing with Unsalted MD5
+
 | Field | Value |
 |---|---|
-| CWE | CWE-___ |
-| OWASP 2025 | A__ / API__ / LLM__ |
-| Severity | Critical / High / Medium / Low |
-| Location | file:line or endpoint |
-| Reproduction | step-by-step (payload/command) |
-| Impact | what an attacker gains |
-| Evidence | screenshot / request-response |
+| CWE | CWE-916 / CWE-327 |
+| OWASP 2025 | A04 Cryptographic Failures |
+| Severity | High |
+| Location | `project/starter-app/app.py:68-69, 117, 129` |
+| Reproduction | Extract the MD5 password hashes from `seed()` and crack them using `hashcat -m 0`. |
+| Impact | An attacker who obtains the password hashes can crack weak passwords quickly and recover user credentials. |
+| Evidence | Week 3 Task 5 screenshot showing the recovered `alicepw` and `admin123` passwords. |
 
 ---
 
