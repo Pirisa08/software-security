@@ -136,6 +136,9 @@ aes-modes
 | `random` 6-digit token | `secrets.token_urlsafe(16)` | CWE-330 |
 | Hardcoded key | `ENC_KEY_HEX` environment variable | CWE-798 |
 
+**Code fix commit:**  
+https://github.com/Pirisa08/software-security/commit/ca4eb6d
+
 ![Task 9 fixed crypto script](img/week03_task9-fixed-script.png)
 
 ## Part 4 — Reflection
@@ -276,5 +279,6 @@ nonce length: 12
 decrypted: b'secret message'
 round trip ok: True
 tampered decrypt failed: MAC check failed
+```
 
 The exploit now fails because AES-GCM detects when the ciphertext has been changed. The normal message decrypted successfully, but the modified ciphertext was rejected with MAC check failed.
