@@ -7,7 +7,7 @@
 > **Ethics note:** Crack only the hashes provided in `hashes.txt` on your own machine. Password-cracking against accounts or systems you don't own is illegal. Wordlists and recovered values stay inside the lab VM.
 
 ## Part 1 — Student Information
-| Name | Student ID | Date | Group |
+| Name | Stu dent ID | Date | Group |
 |---|---|---|---|
 | Pirisa Kitichai | 6631503031 | 16/08/2026 | - |
 
