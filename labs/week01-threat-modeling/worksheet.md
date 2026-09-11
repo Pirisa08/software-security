@@ -9,7 +9,7 @@
 ## Part 1 — Student Information
 | Name | Student ID | Date | Group |
 |---|---|---|---|
-| | | | |
+| Pirisa Kitichai| 6631503031 | 15/08/2026 | |
 
 ## Part 2 — Lecture Questions
 Answer in your own words (2–4 sentences each).
