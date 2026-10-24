@@ -11,7 +11,7 @@
 ## Part 1 — Student Information
 
 | Name | Student ID | Date | Group | AI Use|
-|------|-----------|------|-------|
+|------|-----------|------|-------|-------|
 |  Pirisa Kitichai | 6631503031  |24/10 |  11 | Used ChatGPT to understand the lab instructions, generate test payloads, explain security vulnerabilities, review guardrail limitations, and organize findings. All local security tests and screenshots were performed and verified by the student.
 
 ---
