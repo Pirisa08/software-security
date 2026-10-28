@@ -13,7 +13,7 @@
 # (the upload steps use `if: always()`), so reviewers still see findings.
 #
 # OWASP 2025: A03 (supply chain), A02 (misconfig), A09 (logging/alerting).
-
+ 
 
 # Sandbox/teaching only; for authorized lab use.
 # Week 15 - DevSecOps Security CI Pipeline
