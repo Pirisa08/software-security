@@ -30,6 +30,6 @@ Ans. B
 I added a Trivy IaC security gate that blocks builds when HIGH or CRITICAL infrastructure misconfigurations are detected. During the Red Team test, Trivy detected `USER root` in the Dockerfile (`DS-0002`, HIGH) and failed the pipeline with exit code 1.
 
 **Flag captured from the fail-open challenge:**
-`FLAG{devsecops_fail_open_leaks_admin}`
+FLAG{devsecops_d0bff6d628e0480a}
 
 **Week 15 code provided by the instructor:** `EA5FGSY3`

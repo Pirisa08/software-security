@@ -308,7 +308,7 @@ Automated security gates are useful, but they require correct configuration and 
   cropped window carries nothing that identifies you, and the lab's own output is
   byte-identical for the whole cohort *by design*, so the stamp is the only thing that makes
   the shot yours. Generic or borrowed evidence is not accepted.
-- **Personalized flag (if this lab issues one):** ____________________
+- **Personalized flag (if this lab issues one):** FLAG{devsecops_d0bff6d628e0480a}
   *Flags are unique per student — submitting another student's flag is a violation. How to submit: **learn.zcr.ai/submit** (full guide: `SUBMISSION.md` in the repo root).*
 
 ### Explain in Your Own Words
