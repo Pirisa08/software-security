@@ -87,7 +87,7 @@ The Flask service successfully logged authentication and authorization events. I
 
 **Evidence:**
 
-![Task 0 - Security Logs](img/week15_task0_security_logs.png)
+![Task 0 - Security Logs](img/week15_task0_security_logs.png) 
 
 - **Task 1 — Logging & fail-closed (35 min, A09/A10).** *Goal:* prove fail-closed behavior. *Steps:* read `/admin` in `sample-service.py`; explain why the broad `except Exception` returns **403, not the secret**, and why `type(exc).__name__` (not the message) is logged (CWE-209). Identify the line that would make it fail *open* (the commented INSECURE variant). *Deliverable:* the log lines + a 2–3 sentence explanation of fail-closed vs fail-open.
 
