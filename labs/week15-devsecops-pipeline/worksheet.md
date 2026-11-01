@@ -26,11 +26,25 @@ I used ChatGPT to understand lab instructions, troubleshoot GitHub Actions, revi
 
 Answer in your own words (2–4 sentences each).
 
-1. `README-pipeline.md` says each tool runs **twice** (report step, then gate step). Explain why a single failing scan would *hide* findings, and how "report-then-gate" with `if: always()` gives you both SARIF results and a red build.
-2. What is the difference between **fail-closed** and **fail-open**? In `sample-service.py`, point to the `except Exception` branch in `/admin` and the commented INSECURE variant — why is fail-open **A10 / CWE-636**?
-3. The `permissions:` block in `security-ci.yml` is `contents: read`, `security-events: write`. Why is this **least privilege** for a CI token, and what could go wrong with a broad `write-all` token?
-4. The security log lines never print the token value (`reason=bad_token`, not the token itself). Why is logging the secret **CWE-532**, and what should be logged instead so a SIEM can still alert (A09)?
-5. Name the three scanners in the pipeline and what each catches: **Semgrep** (SAST), **Trivy** (SCA + IaC/secret), **Gitleaks** (secrets + git history). Which OWASP categories does each map to per the README table?
+### 1. Why do security scanners run twice in the CI pipeline?
+
+A single failing scan may stop the workflow before the SARIF report is uploaded, making it harder to review the findings. The report step uses `exit-code: 0` to generate the results without stopping the workflow, while `if: always()` allows the SARIF upload to run. The gate step then uses `exit-code: 1` or `--error` to fail the build when security violations are detected.
+
+### 2. What is the difference between fail-closed and fail-open?
+
+Fail-closed denies access when an unexpected error occurs, while fail-open may accidentally grant access. In `sample-service.py`, the `/admin` handler uses `except Exception as exc` and returns HTTP 403 to prevent unauthorized access. The commented insecure version demonstrates fail-open behavior because it could return the admin panel and secret after an error, which relates to OWASP A10 and CWE-636.
+
+### 3. Why are limited GitHub Actions permissions important?
+
+The permissions `contents: read` and `security-events: write` follow the principle of least privilege because the workflow only needs to read repository files and upload security scan results. During my Week 15 lab, I also investigated an SARIF upload issue and learned that repository features and permissions must both be configured correctly. Using `write-all` would give the workflow unnecessary privileges and increase the damage if a third-party action or CI token were compromised.
+
+### 4. Why should security logs not contain secret tokens?
+
+Logging authentication tokens can expose sensitive credentials to anyone who can access the logs, which is classified as CWE-532. Instead, the application should log event types, timestamps, authentication results, and safe reasons such as `reason=bad_token`. In my Flask test, the service recorded `authn_failure`, `authz_failure`, and `authz_success` without printing token values, supporting OWASP A09 security monitoring.
+
+### 5. What are the three security scanners, and what do they detect?
+
+Semgrep performs Static Application Security Testing (SAST) to identify insecure code patterns and supports detection of OWASP Top 10 issues. Trivy scans vulnerable dependencies (SCA), infrastructure misconfigurations (IaC), and secrets, covering risks such as OWASP A02 and A03. Gitleaks detects hard-coded secrets in source code and Git history, including weaknesses related to CWE-798. In my Red Team test, Trivy detected `USER root` as `DS-0002 (HIGH)` and failed the security gate.
 
 ---
 
@@ -162,27 +176,51 @@ The insecure service catches an authorization error and grants admin access inst
 
 ### Task 2 — Stand Up the Security Gate
 
+**Objective:** Set up a GitHub Actions security pipeline and verify that the scan results are available in GitHub Code Scanning.
+
 **Workflow:** `security-ci.yml`
 
 **GitHub Actions Run:**
 
 https://github.com/Pirisa08/software-security/actions/runs/39913250787
 
+**Test Repository:**
+
+https://github.com/Pirisa08/week15-security-test
+
+**Code Scanning Verification (PR #1):**
+
+https://github.com/Pirisa08/week15-security-test/pull/1
+
 **Results:**
 
-| Security Scanner | Status |
-|---|---|
-| Semgrep (SAST) | Success |
-| Trivy (SCA + Image Scan) | Success |
-| Gitleaks (Secret Scanning) | Success |
+| Security Scanner | Baseline Result | PR #1 Result |
+|---|---|---|
+| Semgrep (SAST) | Success | Failed |
+| Trivy (SCA + IaC) | Success | Failed |
+| Gitleaks (Secret Scanning) | Success | Success |
+
+**Code Scanning Findings:**
+
+- **Scanner:** Trivy
+- **Rule ID:** `DS-0002`
+- **Severity:** HIGH
+- **Location:** `Dockerfile:6`
+- **Finding:** `Image user should not be 'root'`
+- **Additional finding:** One LOW-severity alert was also reported.
+- **Status:** Successfully displayed in GitHub Code Scanning results for PR #1.
 
 **Explanation:**
 
-The GitHub Actions workflow completed successfully, and all three security scanners ran without failing. Semgrep checks source code, Trivy scans dependencies and configurations, and Gitleaks detects exposed secrets. These automated checks help identify security risks during CI.
+I configured a GitHub Actions security pipeline using Semgrep, Trivy, and Gitleaks. The baseline workflow completed successfully, confirming that all three scanners could run.
+
+I also verified that the SARIF security findings were displayed in GitHub Code Scanning for Pull Request #1. Trivy reported `DS-0002 (HIGH)` because the Dockerfile was configured to run as root. This demonstrates that the pipeline can report security findings and identify insecure code changes before merging.
 
 **Evidence:**
 
 ![Task 2 - GitHub Actions](img/week15_task2_github_actions.png)
+
+![Task 2 - Code Scanning Alerts](img/week15_task2_code_scanning_alerts.png)
 
 - **Task 3 — Blue team: pass the gate (30 min).** *Goal:* a green build. *Steps:* ensure the protected repo has no HIGH/CRITICAL findings and no secrets; fix or justify-and-document any (no blanket-ignore, per README §4). *Deliverable:* link to the passing run.
 
@@ -212,30 +250,66 @@ I tested the security pipeline in a separate repository to avoid modifying inten
 - **Task 4 — Red team: Break the Build (40 min).** *Goal:* make the gate say **no**. *Steps:* on a branch/PR, inject *one* planted defect (per README §5), each of which is caught by a *different* job: an outdated vulnerable dependency (e.g. an old `urllib3`) → Trivy SCA; a Dockerfile that runs as **root** — drop the `USER` line, or write `USER root` → Trivy config (`DS-0002`, HIGH); or a hard-coded token → Gitleaks. Open the PR and watch the matching gate step fail. *Deliverable:* screenshot of the **failing** gate step + which job caught it (Trivy SCA / Trivy config / Gitleaks) and which `exit-code: "1"` / `--error` step enforced it.
   > **Why root and not `chmod 777`.** Both gate steps filter to `--severity HIGH,CRITICAL`, and Trivy's Dockerfile scanner has no rule for `chmod` at all — it checks instruction-level `RUN`/`COPY` semantics, exactly as Week 13 Task 1 says. `chmod 777` therefore returns **nothing**, at any severity, and the build goes green: a defect that slips the gate is a Task 5 *Red point*, not a Task 4 screenshot. `:latest` is no good either — that is `DS-0001` and Trivy rates it MEDIUM, which this gate filters out. Running as root is `DS-0002` HIGH, so it fails the build for real.
 
-  ### Task 4 — Red Team: Break the Build
+### Task 4 — Red Team: Break the Build
+
+**Objective:** Test whether the security pipeline can detect and block an intentionally insecure Dockerfile.
 
 **Repository:** https://github.com/Pirisa08/week15-security-test
 
-**Pull Request:** #1 — W15 Red Team — Trivy Root Container Detection
+**Pull Request:** https://github.com/Pirisa08/week15-security-test/pull/1
 
-**Injected Defect:** Dockerfile configured to run as root (`USER root`).
+**Branch:** `wk15-red-test`
 
-**Results:**
+**Injected Defect:** Running the Docker container as the root user.
+
+**Vulnerable Dockerfile:**
+
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+COPY app.py .
+
+USER root
+
+CMD ["python", "app.py"]
+```
+
+**Security Scan Results:**
 
 | Scanner | Result |
 |---|---|
-| Trivy (SCA + IaC) | Failed |
 | Semgrep (SAST) | Failed |
-| Gitleaks | Passed |
+| Trivy (SCA + IaC) | Failed |
+| Gitleaks (Secret Scanning) | Passed |
 | Overall Pipeline | Failed |
+
+**Detected Vulnerability:**
+
+- Scanner: Trivy
+- Rule ID: `DS-0002`
+- Severity: HIGH
+- Location: `Dockerfile:6`
+- Finding: `Last USER command in Dockerfile should not be 'root'`
+- Failed Step: `Gate - fail on HIGH/CRITICAL IaC findings`
+- Exit Code: `1`
 
 **Explanation:**
 
-I introduced one intentionally insecure Dockerfile in a separate test branch. The security pipeline failed, and Trivy reported a high-severity finding. The exact Trivy rule and failing gate step will be confirmed from the scan logs.
+I intentionally configured the Dockerfile to use `USER root` in a separate test branch and opened a Pull Request. Trivy detected the insecure configuration as `DS-0002 (HIGH)` at Dockerfile line 6. The IaC security gate failed with exit code 1, demonstrating that the pipeline rejected the intentionally insecure change.
+
+**Security Impact:**
+
+Running a container as root gives the application unnecessary privileges. If the application is compromised, an attacker may have greater control within the container.
+
+**Mitigation:**
+
+Configure the Dockerfile to run as a non-root user and apply the principle of least privilege. Re-run Trivy to verify that `DS-0002` is no longer detected.
 
 **Evidence:**
 
 ![Task 4 - Trivy Root Detection](img/week15_task4_trivy_root_detection.png)
+
 
 - **Task 5 — Score Break-the-Build (25 min).** *Goal:* tally Red vs Blue. *Steps:* one Blue point per finding the gate caught, one Red point per finding that slipped through; for any bypass, propose the rule that would have caught it. *Deliverable:* scoreboard + one proposed gate improvement.
 
@@ -274,19 +348,28 @@ The Trivy security gate successfully detected `USER root` in the Dockerfile (DS-
 
 ### 1. Security Logging and Fail-Closed
 
-Security logging helps detect unauthorized access and suspicious activities. Fail-closed ensures that unexpected errors deny access instead of allowing unauthorized users into the system.
+Security logging helps detect suspicious activities and unauthorized access attempts (OWASP A09). During my Flask testing, the application recorded `authn_failure`, `authz_failure`, and `authz_success` without exposing sensitive tokens.
+
+Fail-closed behavior ensures that unexpected errors deny access instead of granting it. In the Week 15 lab, the insecure service returned HTTP 200 and exposed the admin panel when an authentication error occurred, while the secure service returned HTTP 403. This demonstrates the importance of preventing fail-open behavior (OWASP A10 / CWE-636).
 
 ### 2. DevSecOps Security Pipeline
 
-Semgrep detects insecure code, Trivy identifies vulnerable dependencies and configurations, and Gitleaks checks for exposed secrets. These tools help prevent security vulnerabilities from reaching production.
+I used GitHub Actions to run three security scanners: Semgrep for insecure code patterns, Trivy for vulnerable dependencies and configuration issues, and Gitleaks for exposed secrets.
+
+The pipeline used a report-then-gate approach. The report steps generated SARIF findings, while the security gate failed the build when a violation was detected. This helped identify vulnerabilities early and prevent insecure changes from passing the configured security checks.
 
 ### 3. Blue Team vs. Red Team
 
-The Blue Team established a passing security baseline. The Red Team introduced `USER root` in a Dockerfile, which Trivy detected as `DS-0002 (HIGH)` and blocked with exit code 1.
+The Blue Team established a clean baseline where all three security scanners passed. For the Red Team test, I created a separate branch containing a Dockerfile with `USER root`.
+
+Trivy detected the configuration as `DS-0002 (HIGH)` and failed the IaC security gate with exit code 1. After changing the Dockerfile to run as a non-root user in a separate verification Pull Request, all three security scanners passed. This demonstrated that the pipeline could detect the planted defect and accept the corrected configuration.
 
 ### 4. Lessons Learned
 
-Automated security gates are useful, but they require correct configuration and maintenance. Testing both successful and failed builds helps verify that security checks actually work.
+Automated security gates are effective only when their rules, severity thresholds, and permissions are correctly configured. A passing pipeline does not guarantee that an application is completely secure, because scanners may miss vulnerabilities or findings below the configured threshold.
+
+This lab taught me the importance of combining security logging, fail-closed authentication, least-privilege container configuration, and automated security scanning. Testing both failing and passing builds helped me verify how the security controls behave in practice.
+
 ---
 
 ## Grading rubric (100)
@@ -325,9 +408,6 @@ Running the container as a non-root user reduces unnecessary privileges. However
 ## 🤖 Audit the AI (required)
 
 AI is a power tool you must **distrust** — you are graded on your *critique*, not the AI's answer.
-
-## 🤖 Audit the AI
-
 ### 1. AI Response
 
 **Prompt:** How can I fix the SARIF upload failure in my Week 15 GitHub Actions pipeline?
@@ -374,17 +454,19 @@ The AI initially focused on token permissions without checking whether Code Scan
 
 ---
 
-## 🧠 Comprehension & Prompt (required)
+## 🧠 Comprehension & Prompt
 
 ### A. Explain in Plain English (EiPE)
 
-The insecure Dockerfile runs the application as the root user, giving it unnecessary privileges. If an attacker compromises the application, these privileges could increase the damage. Trivy detected this issue as `DS-0002 (HIGH)`.
+The insecure Dockerfile runs the application as the root user, giving it unnecessary privileges. If an attacker compromises the application, these privileges could increase the impact of the attack.
+
+During my Red Team test, Trivy detected this misconfiguration as `DS-0002 (HIGH)` and failed the security gate with exit code 1.
 
 ### B. Prompt Problem
 
 **Final Prompt:**
 
-Fix a Dockerfile that uses `USER root`. Apply the principle of least privilege by running the application as a non-root user. Keep the application functional and ensure Trivy no longer detects `DS-0002`.
+Fix the Dockerfile that uses `USER root`. Apply the principle of least privilege by creating a non-root user and running the application under that account. Keep the application functional and ensure the configuration addresses the Trivy finding `DS-0002`.
 
 **AI-Recommended Fix:**
 
@@ -403,9 +485,39 @@ CMD ["python", "app.py"]
 
 **Verification Results:**
 
-- Before: `DS-0002 (HIGH)` — DETECTED
-- After: NOT YET TESTED
+| Test | Result |
+|---|---|
+| Before Fix — Red Team PR #1 | Trivy detected `DS-0002 (HIGH)` |
+| Before Fix — Security Gate | FAILED — Exit Code 1 |
+| Applied Fix — Blue Team PR #2 | Replaced `USER root` with `USER appuser` |
+| After Fix — Semgrep | PASSED |
+| After Fix — Trivy | PASSED |
+| After Fix — Gitleaks | PASSED |
+| After Fix — Overall CI Pipeline | SUCCESS |
+
+**Explanation:**
+
+I created a separate Pull Request to verify the corrected Dockerfile. After replacing `USER root` with a non-root account, all three security scanners passed, including the Trivy configuration security gate.
+
+The result demonstrates that the corrected Dockerfile passed the configured security policy. Running the application as a non-root user also reduces unnecessary privileges and limits the potential impact of an application compromise.
 
 **Conclusion:**
 
-Running as a non-root user reduces unnecessary privileges. The proposed fix addresses `DS-0002`, but the Dockerfile must be scanned again to confirm that the finding is removed.
+The Red Team test demonstrated that Trivy could detect and block the insecure root-user configuration with `DS-0002 (HIGH)`. After applying the non-root fix, the security pipeline passed successfully.
+
+However, passing a security scan does not guarantee that an application is free from all vulnerabilities. Regular security testing, least-privilege configuration, and defense in depth remain necessary.
+
+**Evidence:**
+
+**Before Fix — Red Team (DS-0002 HIGH):**
+
+![Task 4 - Trivy Root Detection](img/week15_task4_trivy_root_detection.png)
+
+**After Fix — Blue Team (Security Pipeline Passed):**
+
+![Week 15 - Non-Root Fix Verification](img/week15_nonroot_fix_verification.png)
+
+**Pull Request References:**
+
+- Before Fix: https://github.com/Pirisa08/week15-security-test/pull/1
+- After Fix: https://github.com/Pirisa08/week15-security-test/pull/2
