@@ -10,9 +10,13 @@
 
 ## Part 1 — Student Information
 
-| Name | Student ID | Date | Group |
-|------|-----------|------|-------|
-| Pirisa Kitichai | 6631503031 | 23/10 | Three Musketeers |
+| Name | Student ID | Date | Group | AI Tool |
+|------|-----------|------|-------|---------|
+| Pirisa Kitichai | 6631503031 | 23/10 | Three Musketeers | ChatGPT (OpenAI) |
+
+**AI Use Disclosure:**
+
+I used ChatGPT to help understand cloud and container security concepts, including Dockerfile hardening, Trivy vulnerability scanning, IAM least privilege, secret exposure, and SBOM analysis. ChatGPT also assisted with reviewing lab instructions, troubleshooting commands, and improving the clarity of my worksheet explanations. I executed the lab commands, examined the security findings, and verified the results using evidence from my own environment.
 
 ---
 
@@ -353,10 +357,21 @@ Distroless images and non-root execution are also important because they reduce 
   the shot yours. Generic or borrowed evidence is not accepted.
 - **Personalized flag (if this lab issues one):** ____________________
   *Flags are unique per student — submitting another student's flag is a violation. How to submit: **learn.zcr.ai/submit** (full guide: `SUBMISSION.md` in the repo root).*
-- **Explain in your own words** *(graded on your reasoning, not copied text):*
-  1. What did you do, and **why did the vulnerability work**?
-  2. **Why does your fix actually stop it** — and what could still break it?
+## Explain in Your Own Words
 
+### 1. What did you do, and why did the vulnerability work?
+
+In Week 13, I used Trivy to scan an insecure Dockerfile and identify security misconfigurations. I examined issues such as running containers as root, exposing secrets through Docker image configuration, overly permissive IAM policies, and insecure dependencies.
+
+These vulnerabilities existed because the application and its infrastructure were configured with unnecessary privileges and insufficient security controls. For example, embedding secrets in a Docker image could expose sensitive information through image layers or metadata, while an IAM policy allowing unrestricted actions could give an attacker excessive access if credentials were compromised.
+
+### 2. Why does your fix actually stop it — and what could still break it?
+
+I improved the Dockerfile by applying security hardening practices, including running the application as a non-root user, using a smaller and pinned base image, and removing embedded secrets. I also reviewed IAM permissions and applied the principle of least privilege to restrict unnecessary access.
+
+These changes reduce the attack surface and limit the damage an attacker could cause. Removing hardcoded secrets prevents them from being included in newly built image layers, while restricting IAM permissions limits the actions available to compromised credentials.
+
+However, security risks can still remain. Previously exposed secrets must be rotated, because removing them from the current Dockerfile does not erase them from older images or build history. Container dependencies may develop new vulnerabilities, and overly broad permissions could be introduced again. Therefore, regular vulnerability scanning, secret rotation, dependency updates, and security reviews are still necessary.
 ---
 
 ## Audit the AI
